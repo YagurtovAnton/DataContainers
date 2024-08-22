@@ -24,20 +24,67 @@ public:
 #endif // DEBUG
 	}
 	friend class ForwardList;
+	friend class Iterator;
 };
 
 int Element::count = 0;
 
+class Iterator
+{
+	Element* Temp;
+	Iterator(Element* temp = nullptr) :Temp(Temp)
+	{
+		cout << "itCONSTR" << this << endl;
+	}
+	~Iterator()
+	{
+		cout << "itDestructor \t" << this << endl;
+	}
+	Iterator& operator++()
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+	bool operator!=(const Iterator& other)const
+	{
+		return this->Temp != other.Temp;
+	}
+	int operator*()
+	{
+		return Temp->Data;
+	}
+};
 class ForwardList
 {
 	Element* Head;
 	unsigned int size;
 public:
+
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
+	
+
 	ForwardList()
 	{
 		Head = nullptr; //Когда список пуст, его Голова указывает на 0
 		size = 0;
 		cout << "LConstructor:\t" << this << endl;
+	}
+	ForwardList(std::initializer_list<int>il) :ForwardList()
+	{
+		//initializer_list это контейнер
+		cout << typeid(il.begin()).name()<< endl;
+		for (int const* it = il.begin(); it != il.end(); it++)
+		{
+			push_back(*it);
+		}
+
 	}
 	ForwardList(const ForwardList& other) :ForwardList()
 	{
@@ -59,7 +106,8 @@ public:
 		if (this == &other)return *this;
 		while (Head)pop_front();
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
-			push_back(Temp->Data);
+			push_front(Temp->Data);
+		revers();
 		cout << "LCopyAssignment:" << this << endl;
 		return *this;
 	}
@@ -162,6 +210,18 @@ public:
 	}
 
 	//				Methods:
+	void revers()
+	{
+		ForwardList buffer;
+		while (Head)
+		{
+			buffer.push_front(Head->Data);
+			pop_front();
+		}
+		this->Head =buffer.Head;
+		this->size =buffer.size;
+		buffer.Head = nullptr;
+	}
 	void print()const
 	{
 		cout << "Head:\t" << Head << endl;
@@ -182,6 +242,8 @@ public:
 
 //#define BASE_CHECK
 //#define COUNT_CHECK
+//#define PERFORMENCE_CHECK
+//#define RANGE_ARREY
 
 void main()
 {
@@ -232,19 +294,51 @@ void main()
 	list2.print();
 #endif // COUNT_CHECK
 
+#ifdef  PERFORMENCE_CHECK
 	int n;
 	cout << "Введите количество элементов: "; cin >> n;
 	ForwardList list;
 	for (int i = 0; i < n; i++)
 	{
 		list.push_back(rand() % 100);
-		//list.push_front(rand() % 100);
+		list.push_front(rand() % 100);
 	}
 	cout << "List filled" << endl;
 	list.print();
 
+	cout << "mainking //" << endl;
+	cout << "" << endl;
 	ForwardList list2 = list;	//CopyConstructor
+	cout << "copy DONE" << endl;
+
 	//ForwardList list2;
 	//list2 = list;
 	list2.print();
+#endif // PERFORMENCE_CHECK
+#ifdef RANGE_ARREY
+	int arr[] = { 3,5,8,13,21 };
+	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		cout << arr[i] << tab;
+	}
+	cout << endl;
+
+	for (int i : arr)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
+
+	Print(arr);
+#endif // RANGE_ARREY
+
+
+	ForwardList list = { 3, 5, 8, 13, 21 };
+	//list.print();
+	for (int i : list)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
+
 }
