@@ -32,6 +32,7 @@ int Element::count = 0;
 class Iterator
 {
 	Element* Temp;
+public:
 	Iterator(Element* temp = nullptr) :Temp(Temp)
 	{
 		cout << "itCONSTR" << this << endl;
@@ -68,7 +69,6 @@ public:
 	{
 		return nullptr;
 	}
-	
 
 	ForwardList()
 	{
