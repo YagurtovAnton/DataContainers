@@ -266,6 +266,33 @@ public:
 		Temp->pPrev->pNext = New;			//4)
 		Temp->pPrev = New;					//5)
 	}
+	void erese(int index)
+	{
+		if (index > size)return;
+		if (index == 0) return pop_front();
+		if (index == size)return pop_front();
+		Element* Temp;
+		if (index < size / 2)
+		{
+			Temp = Head;
+			for (int i = 0; i < index; i++)
+			{
+				Temp = Temp->pNext;
+			}
+		}
+		else
+		{
+			Temp = Tail;
+			for (int i = 0; i <size-index; i++)
+			{
+				Temp = Temp->pNext;
+			}
+		}
+		Temp->pPrev->pNext = Temp->pNext;
+		Temp->pNext->pPrev = Temp->pPrev;
+		delete Temp;
+		size--;
+	}
 
 	//				Removing elements:
 	void pop_front()
