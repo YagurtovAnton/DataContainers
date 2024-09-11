@@ -25,6 +25,7 @@ public:
 	}
 	friend class ForwardList;
 	friend class Iterator;
+	friend class Stack;
 };
 
 int Element::count = 0;
@@ -57,6 +58,7 @@ public:
 };
 class ForwardList
 {
+	protected:
 	Element* Head;
 	unsigned int size;
 public:
@@ -332,13 +334,6 @@ void main()
 	Print(arr);
 #endif // RANGE_ARREY
 
-
-	ForwardList list = { 3, 5, 8, 13, 21 };
 	//list.print();
-	for (int i : list)
-	{
-		cout << i << tab;
-	}
-	cout << endl;
-
-}
+	
+} 
